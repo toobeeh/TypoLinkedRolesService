@@ -1,0 +1,11 @@
+services:
+  typo-linked-roles-service:
+    container_name: typo-linked-roles-service
+    build:
+      context: ../
+      dockerfile: .docker/Dockerfile
+    restart: unless-stopped
+    environment:
+      - GRPC_VALMAR_URL=http://host.docker.internal:5175
+    ports:
+      - "5221:8080"

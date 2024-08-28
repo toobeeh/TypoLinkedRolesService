@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <!--<LocalValmarSource>C:\Users\tobeh\repos\Valmar\tobeh.Valmar.Client\tobeh.Valmar.Client.csproj</LocalValmarSource>-->
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Protobuf Include="**/*.proto" GrpcServices="Server" ProtoRoot="Protos" />
+        <Protobuf Update="Protos\*.proto">
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>obj\Debug\net8.0\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
+        <PackageReference Include="Google.Protobuf" Version="3.26.0" />
+    </ItemGroup>
+
+    <!-- toggle between local and nuget valmar client -->
+    <ItemGroup Condition=" '$(LocalValmarSource)' != '' ">
+        <ProjectReference Include="$(LocalValmarSource)"  />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(LocalValmarSource)' == '' ">
+        <PackageReference Include="tobeh.Valmar.Client" Version="0.1.1714123687" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include=".docker\docker-compose.yml" />
+        <Content Include=".docker\Dockerfile" />
+        <Content Include=".docker\entrypoint.sh" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Config\" />
+      <Folder Include="Service\" />
+      <Folder Include="Util\" />
+    </ItemGroup>
+
+</Project>

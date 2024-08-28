@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+option csharp_namespace = "tobeh.TypoLinkedRolesService";
+
+package linkedRoles;
+
+service LinkedRoles {
+  
+}
+
+

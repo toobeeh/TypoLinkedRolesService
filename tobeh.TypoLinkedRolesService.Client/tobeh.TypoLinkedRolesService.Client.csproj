@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RepositoryUrl>https://github.com/toobeeh/TypoLinkedRolesService</RepositoryUrl>
+        <RootNamespace>tobeh.TypoLinkedRolesService.Client</RootNamespace>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Update="../tobeh.TypoLinkedRolesService.Server/Protos/*.proto" />
+        <Protobuf Include="../tobeh.TypoLinkedRolesService.Server/Protos/*.proto" GrpcServices="Client" ProtoRoot="../tobeh.TypoLinkedRolesService.Server/Protos">
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>Grpc</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Protos\" />
+    </ItemGroup>
+
+</Project>
