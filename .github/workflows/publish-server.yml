@@ -9,13 +9,12 @@ on:
       - 'tobeh.TypoLinkedRolesService.Server/**'
 
 env:
-  IMAGE_NAME: typo-content-service
+  IMAGE_NAME: typo-linked-roles-service
   DOCKERFILE_PATH: ./tobeh.TypoLinkedRolesService.Server/.docker/Dockerfile
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    permissions: write-all
 
     steps:
       - name: Checkout code
