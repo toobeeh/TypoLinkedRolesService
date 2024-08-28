@@ -21,6 +21,8 @@
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
         <PackageReference Include="Google.Protobuf" Version="3.26.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
     </ItemGroup>
 
     <!-- toggle between local and nuget valmar client -->
@@ -38,8 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Config\" />
-      <Folder Include="Service\" />
+      <Folder Include="Api\" />
       <Folder Include="Util\" />
     </ItemGroup>
 

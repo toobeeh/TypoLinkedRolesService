@@ -3,3 +3,4 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/tobeh.TypoLinkedRolesService.Server/appsettings.Development.json
