@@ -6,7 +6,11 @@ option csharp_namespace = "tobeh.TypoLinkedRolesService";
 package linkedRoles;
 
 service LinkedRoles {
-  
+  rpc SayHi(google.protobuf.Empty) returns (HiResponse);
 }
+
+message HiResponse {
+  string message = 1;
+};
 
 
