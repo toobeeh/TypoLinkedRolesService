@@ -2,16 +2,18 @@ using System.Net.Http.Headers;
 using Microsoft.Extensions.Options;
 using tobeh.TypoLinkedRolesService.Server.Config;
 using tobeh.TypoLinkedRolesService.Server.DiscordDtos;
+using tobeh.TypoLinkedRolesService.Server.Service.DiscordDtos;
+using tobeh.TypoLinkedRolesService.Server.Util;
 
 namespace tobeh.TypoLinkedRolesService.Server.Service;
 
-public class DiscordLinkedRolesService
+public class DiscordAppMetadataService
 {
     private readonly HttpClient _httpClient;
     private readonly DiscordClientConfig _config;
-    private readonly ILogger<DiscordLinkedRolesService> _logger;
+    private readonly ILogger<DiscordAppMetadataService> _logger;
 
-    public DiscordLinkedRolesService(IHttpClientFactory httpClientFactory, ILogger<DiscordLinkedRolesService> logger, IOptions<DiscordClientConfig> config)
+    public DiscordAppMetadataService(IHttpClientFactory httpClientFactory, ILogger<DiscordAppMetadataService> logger, IOptions<DiscordClientConfig> config)
     {
         _httpClient = httpClientFactory.CreateClient();
         _logger = logger; 
@@ -29,7 +31,7 @@ public class DiscordLinkedRolesService
     /// <exception cref="NullReferenceException"></exception>
     public async Task<MetadataDefinitionDto[]> SetMetadataDefinition(MetadataDefinitionDto[] metadata)
     {
-        _logger.LogInformation("SetMetadataDefinition(metadata: {metadata})", metadata);
+        _logger.LogTrace("SetMetadataDefinition(metadata: {metadata})", metadata);
         
         var response = await _httpClient.PutAsJsonAsync($"applications/{_config.ApplicationId}/role-connections/metadata", metadata);
         response.EnsureSuccessStatusCode();
@@ -46,7 +48,7 @@ public class DiscordLinkedRolesService
     /// <exception cref="NullReferenceException"></exception>
     public async Task<MetadataDefinitionDto[]> GetMetadataDefinition()
     {
-        _logger.LogInformation("GetMetadataDefinition()");
+        _logger.LogTrace("GetMetadataDefinition()");
         
         var response = await _httpClient.GetAsync($"applications/{_config.ApplicationId}/role-connections/metadata");
         response.EnsureSuccessStatusCode();
@@ -55,4 +57,32 @@ public class DiscordLinkedRolesService
         return result ?? throw new NullReferenceException("No metadata returned");
     }
     
+    /// <summary>
+    /// https://discord.com/developers/docs/resources/user#update-current-user-application-role-connection
+    /// </summary>
+    /// <param name="metadata"></param>
+    /// <param name="accessToken"></param>
+    public async Task<PalantirConnectionDto> PushUserMetadata(PalantirConnectionDto metadata, string accessToken)
+    {
+        _logger.LogTrace("PushUserMetadata(metadata: {metadata})", metadata);
+        
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var response = await _httpClient.PutAsJsonAsync($"users/@me/applications/{_config.ApplicationId}/role-connection", metadata);
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
+        return result ?? throw new NullReferenceException("No metadata returned");
+    }
+    
+    public async Task<PalantirConnectionDto> GetUserMetadata(string accessToken)
+    {
+        _logger.LogTrace("PushUserMetadata(accessToken: {accessToken})", accessToken);
+        
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var response = await _httpClient.GetAsync($"users/@me/applications/{_config.ApplicationId}/role-connection");
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
+        return result ?? throw new NullReferenceException("No metadata returned");
+    }
 }

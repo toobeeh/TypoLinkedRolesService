@@ -25,30 +25,31 @@ namespace tobeh.TypoLinkedRolesService {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFsaW5rZWRSb2xlcy5wcm90bxILbGlua2VkUm9sZXMaG2dvb2dsZS9wcm90",
-            "b2J1Zi9lbXB0eS5wcm90byIdCgpIaVJlc3BvbnNlEg8KB21lc3NhZ2UYASAB",
-            "KAkyRwoLTGlua2VkUm9sZXMSOAoFU2F5SGkSFi5nb29nbGUucHJvdG9idWYu",
-            "RW1wdHkaFy5saW5rZWRSb2xlcy5IaVJlc3BvbnNlQh+qAhx0b2JlaC5UeXBv",
-            "TGlua2VkUm9sZXNTZXJ2aWNlYgZwcm90bzM="));
+            "b2J1Zi9lbXB0eS5wcm90byIsChlVcGRhdGVVc2VyTWV0YWRhdGFNZXNzYWdl",
+            "Eg8KB3VzZXJJZHMYASADKAMyYwoLTGlua2VkUm9sZXMSVAoSVXBkYXRlVXNl",
+            "ck1ldGFkYXRhEiYubGlua2VkUm9sZXMuVXBkYXRlVXNlck1ldGFkYXRhTWVz",
+            "c2FnZRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUIfqgIcdG9iZWguVHlwb0xp",
+            "bmtlZFJvbGVzU2VydmljZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::tobeh.TypoLinkedRolesService.HiResponse), global::tobeh.TypoLinkedRolesService.HiResponse.Parser, new[]{ "Message" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage), global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage.Parser, new[]{ "UserIds" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class HiResponse : pb::IMessage<HiResponse>
+  public sealed partial class UpdateUserMetadataMessage : pb::IMessage<UpdateUserMetadataMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<HiResponse> _parser = new pb::MessageParser<HiResponse>(() => new HiResponse());
+    private static readonly pb::MessageParser<UpdateUserMetadataMessage> _parser = new pb::MessageParser<UpdateUserMetadataMessage>(() => new UpdateUserMetadataMessage());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<HiResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<UpdateUserMetadataMessage> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -64,7 +65,7 @@ namespace tobeh.TypoLinkedRolesService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public HiResponse() {
+    public UpdateUserMetadataMessage() {
       OnConstruction();
     }
 
@@ -72,45 +73,44 @@ namespace tobeh.TypoLinkedRolesService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public HiResponse(HiResponse other) : this() {
-      message_ = other.message_;
+    public UpdateUserMetadataMessage(UpdateUserMetadataMessage other) : this() {
+      userIds_ = other.userIds_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public HiResponse Clone() {
-      return new HiResponse(this);
+    public UpdateUserMetadataMessage Clone() {
+      return new UpdateUserMetadataMessage(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
+    /// <summary>Field number for the "userIds" field.</summary>
+    public const int UserIdsFieldNumber = 1;
+    private static readonly pb::FieldCodec<long> _repeated_userIds_codec
+        = pb::FieldCodec.ForInt64(10);
+    private readonly pbc::RepeatedField<long> userIds_ = new pbc::RepeatedField<long>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Message {
-      get { return message_; }
-      set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
+    public pbc::RepeatedField<long> UserIds {
+      get { return userIds_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as HiResponse);
+      return Equals(other as UpdateUserMetadataMessage);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(HiResponse other) {
+    public bool Equals(UpdateUserMetadataMessage other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
+      if(!userIds_.Equals(other.userIds_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -118,7 +118,7 @@ namespace tobeh.TypoLinkedRolesService {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      hash ^= userIds_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -137,10 +137,7 @@ namespace tobeh.TypoLinkedRolesService {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Message.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Message);
-      }
+      userIds_.WriteTo(output, _repeated_userIds_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -151,10 +148,7 @@ namespace tobeh.TypoLinkedRolesService {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Message.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Message);
-      }
+      userIds_.WriteTo(ref output, _repeated_userIds_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -165,9 +159,7 @@ namespace tobeh.TypoLinkedRolesService {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
-      }
+      size += userIds_.CalculateSize(_repeated_userIds_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -176,13 +168,11 @@ namespace tobeh.TypoLinkedRolesService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(HiResponse other) {
+    public void MergeFrom(UpdateUserMetadataMessage other) {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
-      }
+      userIds_.Add(other.userIds_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -198,8 +188,9 @@ namespace tobeh.TypoLinkedRolesService {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            Message = input.ReadString();
+          case 10:
+          case 8: {
+            userIds_.AddEntriesFrom(input, _repeated_userIds_codec);
             break;
           }
         }
@@ -217,8 +208,9 @@ namespace tobeh.TypoLinkedRolesService {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Message = input.ReadString();
+          case 10:
+          case 8: {
+            userIds_.AddEntriesFrom(ref input, _repeated_userIds_codec);
             break;
           }
         }

@@ -46,17 +46,17 @@ namespace tobeh.TypoLinkedRolesService {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Empty.Parser));
+    static readonly grpc::Marshaller<global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage> __Marshaller_linkedRoles_UpdateUserMetadataMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::tobeh.TypoLinkedRolesService.HiResponse> __Marshaller_linkedRoles_HiResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::tobeh.TypoLinkedRolesService.HiResponse.Parser));
+    static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Empty.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::tobeh.TypoLinkedRolesService.HiResponse> __Method_SayHi = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::tobeh.TypoLinkedRolesService.HiResponse>(
+    static readonly grpc::Method<global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage, global::Google.Protobuf.WellKnownTypes.Empty> __Method_UpdateUserMetadata = new grpc::Method<global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage, global::Google.Protobuf.WellKnownTypes.Empty>(
         grpc::MethodType.Unary,
         __ServiceName,
-        "SayHi",
-        __Marshaller_google_protobuf_Empty,
-        __Marshaller_linkedRoles_HiResponse);
+        "UpdateUserMetadata",
+        __Marshaller_linkedRoles_UpdateUserMetadataMessage,
+        __Marshaller_google_protobuf_Empty);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -92,24 +92,24 @@ namespace tobeh.TypoLinkedRolesService {
       }
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::tobeh.TypoLinkedRolesService.HiResponse SayHi(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Google.Protobuf.WellKnownTypes.Empty UpdateUserMetadata(global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return SayHi(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return UpdateUserMetadata(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::tobeh.TypoLinkedRolesService.HiResponse SayHi(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::CallOptions options)
+      public virtual global::Google.Protobuf.WellKnownTypes.Empty UpdateUserMetadata(global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage request, grpc::CallOptions options)
       {
-        return CallInvoker.BlockingUnaryCall(__Method_SayHi, null, options, request);
+        return CallInvoker.BlockingUnaryCall(__Method_UpdateUserMetadata, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::tobeh.TypoLinkedRolesService.HiResponse> SayHiAsync(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> UpdateUserMetadataAsync(global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return SayHiAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return UpdateUserMetadataAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::tobeh.TypoLinkedRolesService.HiResponse> SayHiAsync(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Google.Protobuf.WellKnownTypes.Empty> UpdateUserMetadataAsync(global::tobeh.TypoLinkedRolesService.UpdateUserMetadataMessage request, grpc::CallOptions options)
       {
-        return CallInvoker.AsyncUnaryCall(__Method_SayHi, null, options, request);
+        return CallInvoker.AsyncUnaryCall(__Method_UpdateUserMetadata, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]

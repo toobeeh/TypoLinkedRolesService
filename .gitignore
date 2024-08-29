@@ -4,3 +4,6 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 /tobeh.TypoLinkedRolesService.Server/appsettings.Development.json
+**/data
+dataSources.xml
+identifier.sqlite
