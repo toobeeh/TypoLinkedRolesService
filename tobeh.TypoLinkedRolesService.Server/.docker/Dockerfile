@@ -4,9 +4,8 @@ WORKDIR /app
 
 # grpc
 EXPOSE 8080 
-
-ARG GRPC_VALMAR_URL="http://localhost:1234"
-ENV GRPC_VALMAR_URL "${GRPC_VALMAR_URL}"
+# rest
+EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
