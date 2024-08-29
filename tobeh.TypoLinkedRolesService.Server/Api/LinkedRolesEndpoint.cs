@@ -47,7 +47,7 @@ namespace tobeh.TypoLinkedRolesService.Server.Api
             var userMetadata = await palantirMetatadaService.GetMetadataForMember(id);
             await appMetadataService.PushUserMetadata(userMetadata, tokens.AccessToken);
 
-            return Redirect("https://www.typo.rip");
+            return Redirect("https://www.typo.rip/help/disccord-roles");
         }
         
     }
