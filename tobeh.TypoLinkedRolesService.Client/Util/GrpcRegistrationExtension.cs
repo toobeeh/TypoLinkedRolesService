@@ -7,7 +7,7 @@ namespace tobeh.TypoLinkedRolesService.Client.Util;
 
 public static class GrpcRegistrationExtension
 {
-    public static IServiceCollection AddTypoContentServiceGrpc(this IServiceCollection services, string address)
+    public static IServiceCollection AddTypoLinkedRolesServiceGrpc(this IServiceCollection services, string address)
     {
         var assembly = Assembly.GetExecutingAssembly();
         
