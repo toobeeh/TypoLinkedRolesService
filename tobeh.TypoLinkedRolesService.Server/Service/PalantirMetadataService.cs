@@ -3,7 +3,7 @@ using tobeh.Valmar;
 
 namespace tobeh.TypoLinkedRolesService.Server.Service;
 
-public class PalantirMetatadaService(Members.MembersClient membersClient, Inventory.InventoryClient inventoryClient, ILogger<PalantirMetatadaService> logger)
+public class PalantirMetadataService(Members.MembersClient membersClient, Inventory.InventoryClient inventoryClient, ILogger<PalantirMetadataService> logger)
 {
     public async Task<PalantirConnectionDto> GetMetadataForMember(ulong discordId)
     {

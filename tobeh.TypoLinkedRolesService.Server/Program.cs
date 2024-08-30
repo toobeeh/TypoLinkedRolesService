@@ -68,7 +68,7 @@ class Program
         
         builder.Services.AddScoped<DiscordAppMetadataService>();
         builder.Services.AddScoped<DiscordOauth2Service>();
-        builder.Services.AddScoped<PalantirMetatadaService>();
+        builder.Services.AddScoped<PalantirMetadataService>();
         builder.Services.Configure<DiscordClientConfig>(builder.Configuration.GetSection("DiscordClient"));
         builder.Services.Configure<DiscordOauthConfig>(builder.Configuration.GetSection("DiscordOauth"));
             

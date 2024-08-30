@@ -6,7 +6,7 @@ using tobeh.TypoLinkedRolesService.Server.Service;
 namespace tobeh.TypoLinkedRolesService.Server.Grpc;
 
 public class LinkedRolesGrpcService(
-    PalantirMetatadaService palantirMetatadaService, 
+    PalantirMetadataService palantirMetadataService, 
     DiscordAppMetadataService discordAppMetadataService, 
     DiscordOauth2Service discordOauth2Service, 
     ILogger<LinkedRolesGrpcService> logger) : LinkedRoles.LinkedRolesBase
@@ -25,7 +25,7 @@ public class LinkedRolesGrpcService(
         var tasks = tokensDict.Keys.Select(id => Task.Run(async () =>
         {
             var tokens = tokensDict[id];
-            var metadata = await palantirMetatadaService.GetMetadataForMember((ulong)id);
+            var metadata = await palantirMetadataService.GetMetadataForMember((ulong)id);
             await discordAppMetadataService.PushUserMetadata(metadata, tokens.AccessToken);
         })).ToArray();
 

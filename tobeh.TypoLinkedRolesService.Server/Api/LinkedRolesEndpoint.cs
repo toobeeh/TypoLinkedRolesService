@@ -7,7 +7,7 @@ using tobeh.TypoLinkedRolesService.Server.Service.DiscordDtos;
 namespace tobeh.TypoLinkedRolesService.Server.Api
 {
     [ApiController]
-    public class LinkedRolesEndpoint(DiscordAppMetadataService appMetadataService, DiscordOauth2Service oauth2Service, PalantirMetatadaService palantirMetatadaService) : ControllerBase
+    public class LinkedRolesEndpoint(DiscordAppMetadataService appMetadataService, DiscordOauth2Service oauth2Service, PalantirMetadataService palantirMetadataService) : ControllerBase
     {
 
         [HttpGet("roles")]
@@ -44,7 +44,7 @@ namespace tobeh.TypoLinkedRolesService.Server.Api
             var id = await oauth2Service.GetDiscordUserId(tokens.AccessToken);
             await oauth2Service.SaveUserTokens(id, tokens);
 
-            var userMetadata = await palantirMetatadaService.GetMetadataForMember(id);
+            var userMetadata = await palantirMetadataService.GetMetadataForMember(id);
             await appMetadataService.PushUserMetadata(userMetadata, tokens.AccessToken);
 
             return Redirect("https://www.typo.rip/help/disccord-roles");
