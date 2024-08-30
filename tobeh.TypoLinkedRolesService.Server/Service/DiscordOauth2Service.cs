@@ -29,6 +29,12 @@ public class DiscordOauth2Service
         _httpClient.BaseAddress = new Uri("https://discord.com/api/");
     }
 
+    /// <summary>
+    /// Retrieve oauth token details from discord with a provided authorization code from a OAuth2 login
+    /// </summary>
+    /// <param name="code"></param>
+    /// <returns></returns>
+    /// <exception cref="NullReferenceException"></exception>
     public async Task<DiscordOauth2TokenDto> GetOauthToken(string code)
     {
         _logger.LogTrace("GetOauthToken(code={code}", code);
@@ -48,6 +54,12 @@ public class DiscordOauth2Service
         return await response.Content.ReadFromJsonAsync<DiscordOauth2TokenDto>() ?? throw new NullReferenceException("token is null");
     }
 
+    /// <summary>
+    /// Uses a refresh token to retrieve new token details from discord
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <returns></returns>
+    /// <exception cref="NullReferenceException"></exception>
     public async Task<DiscordOauth2TokenDto> RefreshOauthToken(string refreshToken)
     {
         _logger.LogTrace("RefreshOauthToken(refreshToken={refreshToken})", refreshToken);
@@ -66,6 +78,12 @@ public class DiscordOauth2Service
         return await response.Content.ReadFromJsonAsync<DiscordOauth2TokenDto>() ?? throw new NullReferenceException("token is null");
     }
 
+    /// <summary>
+    /// Get the user id of a user's access token, using the discord me endpoint
+    /// </summary>
+    /// <param name="accessToken"></param>
+    /// <returns></returns>
+    /// <exception cref="NullReferenceException"></exception>
     public async Task<ulong> GetDiscordUserId(string accessToken)
     {
         _logger.LogTrace("GetDiscordUserId(accessToken={accessToken}", accessToken);
@@ -78,6 +96,11 @@ public class DiscordOauth2Service
         return result?.User.Id ?? throw new NullReferenceException("No metadata returned");
     }
 
+    /// <summary>
+    /// Saves user token details in the database for later use and refresh
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="token"></param>
     public async Task SaveUserToken(ulong userId, DiscordOauth2TokenDto token)
     {
         _logger.LogTrace("SaveUserToken(userId={userId}, tokens={tokens}", userId, token);
@@ -97,6 +120,12 @@ public class DiscordOauth2Service
         await _db.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Gets saved user token details from the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    /// <exception cref="NullReferenceException"></exception>
     public async Task<DiscordOauth2TokenDto> GetSavedUserToken(ulong userId)
     {
         _logger.LogTrace("GetSavedUserToken(userId={userId}", userId);
@@ -113,12 +142,20 @@ public class DiscordOauth2Service
 
     }
 
+    /// <summary>
+    /// Get the discord OAuth url for this app, with required scopes and redirect url
+    /// </summary>
+    /// <returns></returns>
     public string GetAuthorizationUrl()
     {
         return
             $"https://discord.com/oauth2/authorize?client_id={_config.ClientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(_config.RedirectUrl)}&connect&scope=identify+role_connections.write";
     }
     
+    /// <summary>
+    /// A random secret to prevent XSS
+    /// </summary>
+    /// <returns></returns>
     public string GetStateSecret()
     {
         return SecretStateKey;

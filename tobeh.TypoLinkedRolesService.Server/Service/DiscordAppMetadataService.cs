@@ -74,6 +74,12 @@ public class DiscordAppMetadataService
         return result ?? throw new NullReferenceException("No metadata returned");
     }
     
+    /// <summary>
+    /// https://discord.com/developers/docs/resources/user#get-current-user-application-role-connection
+    /// </summary>
+    /// <param name="accessToken"></param>
+    /// <returns></returns>
+    /// <exception cref="NullReferenceException"></exception>
     public async Task<PalantirConnectionDto> GetUserMetadata(string accessToken)
     {
         _logger.LogTrace("PushUserMetadata(accessToken: {accessToken})", accessToken);
