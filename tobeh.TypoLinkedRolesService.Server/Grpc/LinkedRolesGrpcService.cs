@@ -23,13 +23,16 @@ public class LinkedRolesGrpcService(
             {
                 token = await discordOauth2Service.GetSavedUserToken((ulong)id);
             }
-            catch
+            catch(Exception ex)
             {
+                logger.LogWarning("Failed to get user token for {id}: {ex}", id, ex);
                 continue;
             }
            
             tokensDict.Add(id, token);
         }
+        
+        logger.LogInformation("Found {n} ids to update", tokensDict.Count);
         
         var tasks = tokensDict.Keys.Select(id => Task.Run(async () =>
         {
@@ -39,6 +42,7 @@ public class LinkedRolesGrpcService(
         })).ToArray();
 
         await Task.WhenAll(tasks);
+        logger.LogInformation("Finished update");
         
         return new Empty();
     }

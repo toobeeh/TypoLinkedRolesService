@@ -87,7 +87,6 @@ class Program
         
         // Configure the HTTP request pipeline
         app.UseRouting();
-        app.UseHttpsRedirection();
         app.MapGrpcService<LinkedRolesGrpcService>();
         app.MapControllers();
     }

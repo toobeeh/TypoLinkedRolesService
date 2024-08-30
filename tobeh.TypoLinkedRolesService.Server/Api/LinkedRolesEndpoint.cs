@@ -7,7 +7,11 @@ using tobeh.TypoLinkedRolesService.Server.Service.DiscordDtos;
 namespace tobeh.TypoLinkedRolesService.Server.Api
 {
     [ApiController]
-    public class LinkedRolesEndpoint(DiscordAppMetadataService appMetadataService, DiscordOauth2Service oauth2Service, PalantirMetadataService palantirMetadataService) : ControllerBase
+    public class LinkedRolesEndpoint(
+        DiscordAppMetadataService appMetadataService, 
+        DiscordOauth2Service oauth2Service, 
+        PalantirMetadataService palantirMetadataService,
+        ILogger<LinkedRolesEndpoint> logger) : ControllerBase
     {
 
         [HttpGet("roles")]
