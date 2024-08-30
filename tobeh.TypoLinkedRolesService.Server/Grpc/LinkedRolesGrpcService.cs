@@ -25,7 +25,7 @@ public class LinkedRolesGrpcService(
             }
             catch(Exception ex)
             {
-                logger.LogWarning("Failed to get user token for {id}: {ex}", id, ex);
+                logger.LogDebug("Failed to get user token for {id}: {ex}", id, ex);
                 continue;
             }
            
