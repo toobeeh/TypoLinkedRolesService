@@ -9,9 +9,23 @@ public class PalantirMetadataRegistrationService(
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         logger.LogTrace("StartAsync()");
+
+        // get current scheme
+        var currentScheme = (await discordAppMetadataService.GetMetadataDefinition()).ToList();
+        var newScheme = PalantirMetadata.Definitions.ToList();
         
-        var scheme = await discordAppMetadataService.SetMetadataDefinition(PalantirMetadata.Definitions);
-        logger.LogInformation("Updated the metadata scheme: {scheme}", scheme);
+        // check if it differs
+        var schemeIsOutdated = newScheme.Any(newItem => !currentScheme.Any(oldItem => 
+            oldItem.Name == newItem.Name && newItem.Description == oldItem.Description && 
+            newItem.Description == oldItem.Description && newItem.Key == oldItem.Key ));
+
+        if (schemeIsOutdated)
+        {
+            logger.LogInformation("Current metadata scheme is different to definition, updating");
+            await discordAppMetadataService.SetMetadataDefinition(PalantirMetadata.Definitions);
+        }
+        
+        logger.LogInformation("Current metadata scheme: {scheme}", currentScheme);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
