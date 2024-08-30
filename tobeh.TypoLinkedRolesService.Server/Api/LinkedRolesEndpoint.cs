@@ -40,9 +40,9 @@ namespace tobeh.TypoLinkedRolesService.Server.Api
                 return StatusCode(StatusCodes.Status403Forbidden, "State verification failed.");
             }
 
-            var tokens = await oauth2Service.GetOauthTokens(code);
+            var tokens = await oauth2Service.GetOauthToken(code);
             var id = await oauth2Service.GetDiscordUserId(tokens.AccessToken);
-            await oauth2Service.SaveUserTokens(id, tokens);
+            await oauth2Service.SaveUserToken(id, tokens);
 
             var userMetadata = await palantirMetadataService.GetMetadataForMember(id);
             await appMetadataService.PushUserMetadata(userMetadata, tokens.AccessToken);

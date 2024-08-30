@@ -15,11 +15,20 @@ public class LinkedRolesGrpcService(
     {
         logger.LogTrace("UpdateUserMetadata(request={request})", request);
 
-        var tokensDict = new Dictionary<long, DiscordOauth2TokensDto>();
+        var tokensDict = new Dictionary<long, DiscordOauth2TokenDto>();
         foreach (var id in request.UserIds)
         {
-            var tokens = await discordOauth2Service.GetSavedUserTokens((ulong)id); 
-            tokensDict.Add(id, tokens);
+            DiscordOauth2TokenDto token;
+            try
+            {
+                token = await discordOauth2Service.GetSavedUserToken((ulong)id);
+            }
+            catch
+            {
+                continue;
+            }
+           
+            tokensDict.Add(id, token);
         }
         
         var tasks = tokensDict.Keys.Select(id => Task.Run(async () =>

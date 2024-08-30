@@ -17,7 +17,7 @@ public class DiscordOauth2Service
     private readonly DiscordOauthConfig _config;
     private readonly ILogger<DiscordOauth2Service> _logger;
     private readonly AppDatabaseContext _db;
-    private static string _secretStateKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+    private static readonly string SecretStateKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 
     public DiscordOauth2Service(IHttpClientFactory httpClientFactory, ILogger<DiscordOauth2Service> logger, IOptions<DiscordOauthConfig> config, AppDatabaseContext dbContext)
     {
@@ -29,9 +29,9 @@ public class DiscordOauth2Service
         _httpClient.BaseAddress = new Uri("https://discord.com/api/");
     }
 
-    public async Task<DiscordOauth2TokensDto> GetOauthTokens(string code)
+    public async Task<DiscordOauth2TokenDto> GetOauthToken(string code)
     {
-        _logger.LogTrace("GetOauthTokens(code={code}", code);
+        _logger.LogTrace("GetOauthToken(code={code}", code);
        
         // Create the body for the request
         var body = new FormUrlEncodedContent(new[]
@@ -45,12 +45,12 @@ public class DiscordOauth2Service
 
         var response = await _httpClient.PostAsync("oauth2/token", body);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<DiscordOauth2TokensDto>() ?? throw new NullReferenceException("token is null");
+        return await response.Content.ReadFromJsonAsync<DiscordOauth2TokenDto>() ?? throw new NullReferenceException("token is null");
     }
 
-    public async Task<DiscordOauth2TokensDto> RefreshOauthTokens(string refreshToken)
+    public async Task<DiscordOauth2TokenDto> RefreshOauthToken(string refreshToken)
     {
-        _logger.LogTrace("RefreshOauthTokens(refreshToken={refreshToken})", refreshToken);
+        _logger.LogTrace("RefreshOauthToken(refreshToken={refreshToken})", refreshToken);
         
         // Create the body for the request
         var body = new FormUrlEncodedContent(new[]
@@ -63,7 +63,7 @@ public class DiscordOauth2Service
 
         var response = await _httpClient.PostAsync("oauth2/token", body);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<DiscordOauth2TokensDto>() ?? throw new NullReferenceException("token is null");
+        return await response.Content.ReadFromJsonAsync<DiscordOauth2TokenDto>() ?? throw new NullReferenceException("token is null");
     }
 
     public async Task<ulong> GetDiscordUserId(string accessToken)
@@ -78,9 +78,9 @@ public class DiscordOauth2Service
         return result?.User.Id ?? throw new NullReferenceException("No metadata returned");
     }
 
-    public async Task SaveUserTokens(ulong userId, DiscordOauth2TokensDto tokens)
+    public async Task SaveUserToken(ulong userId, DiscordOauth2TokenDto token)
     {
-        _logger.LogTrace("SaveUserTokens(userId={userId}, tokens={tokens}", userId, tokens);
+        _logger.LogTrace("SaveUserToken(userId={userId}, tokens={tokens}", userId, token);
 
         var existing = await _db.DiscordUserTokens.FirstOrDefaultAsync(token => token.UserId == userId);
         if (existing is not null)
@@ -91,24 +91,24 @@ public class DiscordOauth2Service
 
         _db.DiscordUserTokens.Add(new DiscordUserToken
         {
-            AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken, UserId = userId,
+            AccessToken = token.AccessToken, RefreshToken = token.RefreshToken, UserId = userId,
             Expiry = DateTime.UtcNow.AddDays(7)
         });
         await _db.SaveChangesAsync();
     }
 
-    public async Task<DiscordOauth2TokensDto> GetSavedUserTokens(ulong userId)
+    public async Task<DiscordOauth2TokenDto> GetSavedUserToken(ulong userId)
     {
-        _logger.LogTrace("GetSavedUserTokens(userId={userId}", userId);
+        _logger.LogTrace("GetSavedUserToken(userId={userId}", userId);
         
-        var tokens = await _db.DiscordUserTokens.FirstOrDefaultAsync(token => token.UserId == userId);
-        if(tokens is null) throw new NullReferenceException("No token saved");
+        var token = await _db.DiscordUserTokens.FirstOrDefaultAsync(token => token.UserId == userId);
+        if(token is null) throw new NullReferenceException("No token saved");
 
-        if (tokens.Expiry > DateTime.UtcNow)
-            return new DiscordOauth2TokensDto(tokens.AccessToken, tokens.RefreshToken);
+        if (token.Expiry > DateTime.UtcNow)
+            return new DiscordOauth2TokenDto(token.AccessToken, token.RefreshToken);
         
-        var refreshedToken = await RefreshOauthTokens(tokens.RefreshToken);
-        await SaveUserTokens(userId, refreshedToken);
+        var refreshedToken = await RefreshOauthToken(token.RefreshToken);
+        await SaveUserToken(userId, refreshedToken);
         return refreshedToken;
 
     }
@@ -121,7 +121,7 @@ public class DiscordOauth2Service
     
     public string GetStateSecret()
     {
-        return _secretStateKey;
+        return SecretStateKey;
     }
     
 }
