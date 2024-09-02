@@ -5,7 +5,7 @@ services:
       context: ../
       dockerfile: .docker/Dockerfile
     restart: unless-stopped
-    environment:
-      - GRPC_VALMAR_URL=http://host.docker.internal:5175
     ports:
       - "5221:8080"
+    volumes:
+      - path-to-appsettings.json:/app/appsettings.json

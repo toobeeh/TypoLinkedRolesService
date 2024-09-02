@@ -18,6 +18,8 @@ public class LinkedRolesGrpcService(
         var tokensDict = new Dictionary<long, DiscordOauth2TokenDto>();
         foreach (var id in request.UserIds)
         {
+            if(tokensDict.ContainsKey(id)) continue;
+            
             DiscordOauth2TokenDto token;
             try
             {
