@@ -39,7 +39,7 @@ public class PalantirMetadataService(Members.MembersClient membersClient, Invent
         
         return new PalantirConnectionDto(
             member.Username,
-            (string.IsNullOrWhiteSpace(member.PatronEmoji) ? $"{member.PatronEmoji} " : "") + "skribbl typo",
+            (string.IsNullOrWhiteSpace(member.PatronEmoji) ? "" : $"{member.PatronEmoji} ") + "skribbl typo",
             new PalantirMetadataDto(
                 member.MappedFlags.Contains(MemberFlagMessage.Patron) ? 1 : 0,
                 1,
