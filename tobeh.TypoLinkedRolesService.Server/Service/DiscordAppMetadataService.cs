@@ -1,4 +1,6 @@
+using System.Net;
 using System.Net.Http.Headers;
+using Grpc.Core;
 using Microsoft.Extensions.Options;
 using tobeh.TypoLinkedRolesService.Server.Config;
 using tobeh.TypoLinkedRolesService.Server.DiscordDtos;
@@ -68,9 +70,16 @@ public class DiscordAppMetadataService
         
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _httpClient.PutAsJsonAsync($"users/@me/applications/{_config.ApplicationId}/role-connection", metadata);
+
+        if (response.StatusCode == HttpStatusCode.TooManyRequests)
+        {
+            throw new ApplicationException($"Rate limit for user {metadata.PlatformUsername} exceeded");
+        }
+        
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
+        _logger.LogDebug("Pushed metadata: {pushed}, received: {received}", metadata, result);
         return result ?? throw new NullReferenceException("No metadata returned");
     }
     
