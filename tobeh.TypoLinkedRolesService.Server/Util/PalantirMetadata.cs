@@ -10,8 +10,8 @@ public static class PalantirMetadata
             "bubbles collected"),
         new MetadataDefinitionDto(MetadataDefinitionTypeDto.IntegerGreaterThanOrEqual, "drops", "Drops",
             "drops collected"),
-        new MetadataDefinitionDto(MetadataDefinitionTypeDto.BooleanEqual, "patron", "Patron", "User is a typo patreon subscriber"),
-        new MetadataDefinitionDto(MetadataDefinitionTypeDto.BooleanEqual, "patronizer", "Patronizer", "User is a typo patronizer subscriber"),
-        new MetadataDefinitionDto(MetadataDefinitionTypeDto.BooleanEqual, "member", "Member", "User has a typo account")
+        new MetadataDefinitionDto(MetadataDefinitionTypeDto.BooleanEqual, "is_patron", "Patron", "User is a typo patreon subscriber"),
+        new MetadataDefinitionDto(MetadataDefinitionTypeDto.BooleanEqual, "is_patronizer", "Patronizer", "User is a typo patronizer subscriber"),
+        new MetadataDefinitionDto(MetadataDefinitionTypeDto.BooleanEqual, "is_member", "Member", "User has a typo account")
     };
 }
