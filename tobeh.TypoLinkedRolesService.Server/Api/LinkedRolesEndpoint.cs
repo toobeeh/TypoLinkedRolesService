@@ -11,6 +11,7 @@ namespace tobeh.TypoLinkedRolesService.Server.Api
         DiscordAppMetadataService appMetadataService, 
         DiscordOauth2Service oauth2Service, 
         PalantirMetadataService palantirMetadataService,
+        MetadataEligibilityService metadataEligibilityService,
         ILogger<LinkedRolesEndpoint> logger) : ControllerBase
     {
 
@@ -72,6 +73,7 @@ namespace tobeh.TypoLinkedRolesService.Server.Api
 
             var userMetadata = await palantirMetadataService.GetMetadataForMember(id);
             await appMetadataService.PushUserMetadata(userMetadata, tokens.AccessToken);
+            metadataEligibilityService.LogMetadataRecord((long)id, userMetadata.PalantirMetadata);
 
             return Redirect("https://www.typo.rip/help/disccord-roles");
         }
