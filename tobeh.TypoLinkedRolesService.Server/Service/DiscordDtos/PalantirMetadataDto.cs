@@ -15,3 +15,5 @@ public record PalantirMetadataDto(
     [property: JsonPropertyName("patronizer")] int Patronizer,
     [property: JsonPropertyName("bubbles")] int Bubbles,
     [property: JsonPropertyName("drops")] int Drops);
+
+public record MetadataRecordDto(DateTimeOffset CreatedAt, PalantirMetadataDto Metadata);

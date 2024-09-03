@@ -9,6 +9,7 @@ public class LinkedRolesGrpcService(
     PalantirMetadataService palantirMetadataService, 
     DiscordAppMetadataService discordAppMetadataService, 
     DiscordOauth2Service discordOauth2Service, 
+    MetadataEligibilityService metadataEligibilityService,
     ILogger<LinkedRolesGrpcService> logger) : LinkedRoles.LinkedRolesBase
 {
     public override async Task<Empty> UpdateUserMetadata(UpdateUserMetadataMessage request, ServerCallContext context)
@@ -42,11 +43,20 @@ public class LinkedRolesGrpcService(
             {
                 var tokens = tokensDict[id];
                 var metadata = await palantirMetadataService.GetMetadataForMember((ulong)id);
-                await discordAppMetadataService.PushUserMetadata(metadata, tokens.AccessToken);
+
+                if (metadataEligibilityService.MetadataIsEligibleForUpdate(id, metadata.PalantirMetadata))
+                {
+                    await discordAppMetadataService.PushUserMetadata(metadata, tokens.AccessToken);
+                    metadataEligibilityService.LogMetadataRecord(id, metadata.PalantirMetadata);
+                }
+                else
+                {
+                    logger.LogDebug("Metadata for user {id} is not eligible for update", id);
+                }
             }
             catch (Exception e)
             {
-                logger.LogError($"Updating metadata for user {id} failed: {e}");
+                logger.LogError("Failed to update metadata for user {id}: {e}", id, e);
             }
         })).ToArray();
 

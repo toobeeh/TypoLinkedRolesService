@@ -56,6 +56,7 @@ class Program
             .AddScoped<DiscordAppMetadataService>()
             .AddScoped<DiscordOauth2Service>()
             .AddScoped<PalantirMetadataService>()
+            .AddSingleton<MetadataEligibilityService>()
             .Configure<DiscordClientConfig>(builder.Configuration.GetSection("DiscordClient"))
             .Configure<DiscordOauthConfig>(builder.Configuration.GetSection("DiscordOauth"))
             .AddValmarGrpc(
