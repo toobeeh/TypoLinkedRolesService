@@ -3,13 +3,16 @@ using tobeh.TypoLinkedRolesService.Server.Util;
 namespace tobeh.TypoLinkedRolesService.Server.Service;
 
 public class PalantirMetadataRegistrationService(
-    DiscordAppMetadataService discordAppMetadataService, 
+    IServiceScopeFactory serviceScopeFactory, 
     ILogger<PalantirMetadataRegistrationService> logger) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         logger.LogTrace("StartAsync()");
 
+        using var scope = serviceScopeFactory.CreateScope();
+        var discordAppMetadataService = scope.ServiceProvider.GetRequiredService<DiscordAppMetadataService>();
+        
         // get current scheme
         var currentScheme = (await discordAppMetadataService.GetMetadataDefinition()).ToList();
         var newScheme = PalantirMetadata.Definitions.ToList();
