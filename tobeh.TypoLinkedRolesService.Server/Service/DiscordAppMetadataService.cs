@@ -70,12 +70,6 @@ public class DiscordAppMetadataService
         
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _httpClient.PutAsJsonAsync($"users/@me/applications/{_config.ApplicationId}/role-connection", metadata);
-
-        if (response.StatusCode == HttpStatusCode.TooManyRequests)
-        {
-            throw new ApplicationException($"Rate limit for user {metadata.PlatformUsername} exceeded");
-        }
-        
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();

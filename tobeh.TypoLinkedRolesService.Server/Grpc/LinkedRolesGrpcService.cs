@@ -38,9 +38,16 @@ public class LinkedRolesGrpcService(
         
         var tasks = tokensDict.Keys.Select(id => Task.Run(async () =>
         {
-            var tokens = tokensDict[id];
-            var metadata = await palantirMetadataService.GetMetadataForMember((ulong)id);
-            await discordAppMetadataService.PushUserMetadata(metadata, tokens.AccessToken);
+            try
+            {
+                var tokens = tokensDict[id];
+                var metadata = await palantirMetadataService.GetMetadataForMember((ulong)id);
+                await discordAppMetadataService.PushUserMetadata(metadata, tokens.AccessToken);
+            }
+            catch (Exception e)
+            {
+                logger.LogError($"Updating metadata for user {id} failed: {e}");
+            }
         })).ToArray();
 
         await Task.WhenAll(tasks);
