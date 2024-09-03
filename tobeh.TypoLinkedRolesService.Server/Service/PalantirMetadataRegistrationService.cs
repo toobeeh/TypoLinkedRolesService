@@ -22,7 +22,7 @@ public class PalantirMetadataRegistrationService(
         if (schemeIsOutdated)
         {
             logger.LogInformation("Current metadata scheme is different to definition, updating");
-            await discordAppMetadataService.SetMetadataDefinition(PalantirMetadata.Definitions);
+            currentScheme = (await discordAppMetadataService.SetMetadataDefinition(PalantirMetadata.Definitions)).ToList();
         }
         
         logger.LogInformation("Current metadata scheme: {scheme}", currentScheme);
