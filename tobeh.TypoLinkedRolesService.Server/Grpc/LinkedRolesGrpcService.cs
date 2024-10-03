@@ -46,7 +46,15 @@ public class LinkedRolesGrpcService(
 
                 if (metadataEligibilityService.MetadataIsEligibleForUpdate(id, metadata.PalantirMetadata))
                 {
-                    await discordAppMetadataService.PushUserMetadata(metadata, tokens.AccessToken);
+                    try
+                    {
+                        await discordAppMetadataService.PushUserMetadata(metadata, tokens.AccessToken);
+                    }
+                    catch (RateLimitedException e)
+                    {
+                        logger.LogWarning("Rate limited, retry in {e.RetryIn} seconds", e.RetryIn);
+                        return;
+                    }
                     metadataEligibilityService.LogMetadataRecord(id, metadata.PalantirMetadata);
                 }
                 else

@@ -9,6 +9,17 @@ using tobeh.TypoLinkedRolesService.Server.Util;
 
 namespace tobeh.TypoLinkedRolesService.Server.Service;
 
+public class RateLimitedException : Exception
+{
+    private readonly int _retryIn;
+    public RateLimitedException(string message, int retryIn) : base(message)
+    {
+        _retryIn = retryIn;
+    }
+    
+    public int RetryIn => _retryIn;
+}
+
 public class DiscordAppMetadataService
 {
     private readonly HttpClient _httpClient;
@@ -71,9 +82,25 @@ public class DiscordAppMetadataService
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _httpClient.PutAsJsonAsync($"users/@me/applications/{_config.ApplicationId}/role-connection", metadata);
         
-        var headers = response.Headers.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value)}");
-        _logger.LogDebug("Headers for {username}: {headers}", metadata.PlatformUsername, string.Join("; ", headers));
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            response.EnsureSuccessStatusCode();
+        }
+        catch(HttpRequestException e)
+        {
+            var headers = response.Headers.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value)}");
+            _logger.LogError(e, "Error pushing metadata: {metadata}, headers: {headers}", metadata, string.Join("; ", headers));
+            
+            if(e.StatusCode == HttpStatusCode.TooManyRequests)
+            {
+                var retryAfter = response.Headers.GetValues("x-ratelimit-reset-after").FirstOrDefault();
+                if(retryAfter != null && int.TryParse(retryAfter, out var retryIn))
+                {
+                    throw new RateLimitedException("Rate limited", retryIn);
+                }
+            }
+            throw;
+        }
 
         var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
         _logger.LogDebug("Pushed metadata: {pushed}, received: {received}", metadata, result);
