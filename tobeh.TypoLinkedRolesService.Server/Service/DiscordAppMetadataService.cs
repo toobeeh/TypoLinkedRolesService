@@ -70,10 +70,10 @@ public class DiscordAppMetadataService
         
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _httpClient.PutAsJsonAsync($"users/@me/applications/{_config.ApplicationId}/role-connection", metadata);
-        response.EnsureSuccessStatusCode();
         
         var headers = response.Headers.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value)}");
         _logger.LogDebug("Headers for {username}: {headers}", metadata.PlatformUsername, string.Join("; ", headers));
+        response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
         _logger.LogDebug("Pushed metadata: {pushed}, received: {received}", metadata, result);
