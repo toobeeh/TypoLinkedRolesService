@@ -71,6 +71,9 @@ public class DiscordAppMetadataService
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _httpClient.PutAsJsonAsync($"users/@me/applications/{_config.ApplicationId}/role-connection", metadata);
         response.EnsureSuccessStatusCode();
+        
+        var rateLimitRemaining = response.Headers.GetValues("X-RateLimit-Remaining").FirstOrDefault();
+        _logger.LogDebug("Rate limit remaining: {rateLimitRemaining} for {username}", rateLimitRemaining, metadata.PlatformUsername);
 
         var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
         _logger.LogDebug("Pushed metadata: {pushed}, received: {received}", metadata, result);
