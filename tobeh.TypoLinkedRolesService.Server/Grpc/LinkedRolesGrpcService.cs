@@ -53,6 +53,8 @@ public class LinkedRolesGrpcService(
                     catch (RateLimitedException e)
                     {
                         logger.LogWarning("Rate limited, retry in {e.RetryIn} seconds", e.RetryIn);
+                        var nowMetadata = await discordAppMetadataService.GetUserMetadata(tokens.AccessToken);
+                        logger.LogInformation("Metadata after rate limit: {nowMetadata}", nowMetadata);
                         return;
                     }
                     metadataEligibilityService.LogMetadataRecord(id, metadata.PalantirMetadata);

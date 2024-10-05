@@ -103,7 +103,7 @@ public class DiscordAppMetadataService
         }
 
         var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
-        _logger.LogDebug("Pushed metadata: {pushed}, received: {received}", metadata, result);
+        _logger.LogDebug("Pushed metadata: {pushed}, received: {received}, headers: {headers}", metadata, result, response.Headers.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value)}"));
         return result ?? throw new NullReferenceException("No metadata returned");
     }
     
