@@ -115,7 +115,7 @@ public class DiscordAppMetadataService
     /// <exception cref="NullReferenceException"></exception>
     public async Task<PalantirConnectionDto> GetUserMetadata(string accessToken)
     {
-        _logger.LogTrace("PushUserMetadata(accessToken: {accessToken})", accessToken);
+        _logger.LogTrace("GetUserMetadata(accessToken: {accessToken})", accessToken);
         
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _httpClient.GetAsync($"users/@me/applications/{_config.ApplicationId}/role-connection");
