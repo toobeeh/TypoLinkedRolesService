@@ -1,5 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using Grpc.Core;
 using Microsoft.Extensions.Options;
 using tobeh.TypoLinkedRolesService.Server.Config;
@@ -78,10 +80,13 @@ public class DiscordAppMetadataService
     public async Task<PalantirConnectionDto> PushUserMetadata(PalantirConnectionDto metadata, string accessToken)
     {
         _logger.LogTrace("PushUserMetadata(metadata: {metadata})", metadata);
+
+        var request = new HttpRequestMessage(HttpMethod.Put,
+            $"users/@me/applications/{_config.ApplicationId}/role-connection");
+        request.Content = new StringContent(JsonSerializer.Serialize(metadata), Encoding.UTF8, "application/json");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var response = await _httpClient.PutAsJsonAsync($"users/@me/applications/{_config.ApplicationId}/role-connection", metadata);
-        
+        var response = await _httpClient.SendAsync(request);
         try
         {
             response.EnsureSuccessStatusCode();
@@ -117,8 +122,11 @@ public class DiscordAppMetadataService
     {
         _logger.LogTrace("GetUserMetadata(accessToken: {accessToken})", accessToken);
         
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var response = await _httpClient.GetAsync($"users/@me/applications/{_config.ApplicationId}/role-connection");
+        var request = new HttpRequestMessage(HttpMethod.Get,
+            $"users/@me/applications/{_config.ApplicationId}/role-connection");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        
+        var response = await _httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<PalantirConnectionDto>();
